@@ -1,10 +1,14 @@
 package com.example.mobdev_3s_4l
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +19,20 @@ class MainActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val tag = "Filckr cats"
+        val btnHTTP = findViewById<Button>(R.id.btnHTTP)
+
+        btnHTTP.setOnClickListener{
+            val link = URL("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ff49fcd4d4a08aa6aafb6ea3de826464&tags=cat&format=json&nojsoncallback=1")
+            Thread {
+                val connection = link.openConnection() as HttpURLConnection
+                connection.connect()
+                val data = connection.inputStream.bufferedReader().readText()
+                connection.disconnect()
+                Log.d(tag, data)
+            }.start()
         }
     }
 }
