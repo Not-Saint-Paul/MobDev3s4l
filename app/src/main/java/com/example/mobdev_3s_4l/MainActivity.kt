@@ -1,6 +1,7 @@
 package com.example.mobdev_3s_4l
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -8,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CellClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: Adapter
@@ -46,8 +47,12 @@ class MainActivity : AppCompatActivity() {
             ColorData("Orange", 0xFFFFA500),
         ).shuffled())
 
-        adapter = Adapter(this, colorList)
+        adapter = Adapter(this, colorList, this)
         recyclerView.adapter = adapter
+    }
+
+    override fun onCellClick(colorName: String) {
+        Toast.makeText(this, "IT’S $colorName", Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -55,3 +60,7 @@ data class ColorData(
     var colorName: String,
     var colorHex: Long,
 )
+
+interface CellClickListener {
+    fun onCellClick(colorName: String)
+}

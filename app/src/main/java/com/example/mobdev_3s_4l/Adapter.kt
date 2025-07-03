@@ -1,13 +1,14 @@
 package com.example.mobdev_3s_4l
 
 import android.content.Context
+import android.content.DialogInterface.OnClickListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class Adapter(private val context: Context, private val list: ArrayList<ColorData>) :
+class Adapter(private val context: Context, private val list: ArrayList<ColorData>, private val listener: CellClickListener) :
     RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -18,6 +19,10 @@ class Adapter(private val context: Context, private val list: ArrayList<ColorDat
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val colorData = list[position]
         holder.bind(colorData)
+
+        holder.itemView.setOnClickListener {
+            listener.onCellClick(colorData.colorName)
+        }
     }
 
     override fun getItemCount(): Int {
